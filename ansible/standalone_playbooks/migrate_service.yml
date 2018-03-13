@@ -1,0 +1,43 @@
+---
+# This example will migrate a service from one server to a second server
+# Glenn H. Snead - 7 Mar 2018
+# gsnead@redhat.com
+#
+
+
+- hosts: server1
+  become: true
+  vars:
+   - service_name: rsyslog
+  tasks:
+  - name: Stop named service (RHEL 6)
+    service:
+      name: '{{ service_name }}'
+      state: stopped
+    when: ansible_distribution_major_version == "6"
+
+  - name: Stop named service (RHEL 7)
+    systemd:
+      name: '{{ service_name }}'
+      state: started
+    when: ansible_distribution_major_version == "7"
+
+- hosts: server2
+  become: true
+  vars:
+   - service_name: rsyslog
+  tasks:
+  - name: Start named service (RHEL 6)
+    service:
+      name: '{{ service_name }}'
+      state: started
+    when:
+      - ansible_distribution_major_version == "6"
+
+  - name: Start named service (RHEL 7)
+    systemd:
+      name: '{{ service_name }}'
+      state: started
+    when:
+      - ansible_distribution_major_version == "7"
+

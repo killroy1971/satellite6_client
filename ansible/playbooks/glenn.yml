@@ -1,0 +1,9 @@
+---
+# This playbook will set up a new raspberry pi server
+
+- hosts: pi
+  remote_user: glenn
+  become: no
+  roles:
+    - glenn
+

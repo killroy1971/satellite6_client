@@ -1,0 +1,8 @@
+*.retry
+roles/
+group_vars/all/personal.yml
+inventory/rhev/ca.pem
+vault/personal.yml
+password.yml
+.ansible.log
+ansible.log

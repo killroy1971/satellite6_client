@@ -1,0 +1,29 @@
+---
+# This example will configure ssh on the target server(s) or target group(s)
+# Glenn H. Snead - 4 Mar 2018
+# gsnead@redhat.com
+
+- hosts:
+    - server1
+    - server2
+  become: true
+  tasks:
+  - name: Update sshd_config file
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: '^#PubkeyAuthentication yes'
+      replace: 'PubkeyAuthentication yes'
+      backup: no
+
+  - name: Restart sshd service (RHEL 6)
+    service:
+      name: sshd
+      state: restarted
+    when: ansible_distribution_major_version == "6"
+
+  - name: Restart sshd service (RHEL 7)
+    systemd:
+      name: sshd
+      state: restarted
+    when: ansible_distribution_major_version == "7"
+

@@ -1,0 +1,15 @@
+---
+# This playbook will set up a server
+
+- hosts: 
+    - server1
+    - server2
+  become: no
+  vars:
+    epel: false
+    openshift_git: false
+    ansible_server: false
+    static_ipaddr: true
+  roles:
+    - common
+
